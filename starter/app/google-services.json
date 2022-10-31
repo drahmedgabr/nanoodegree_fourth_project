@@ -1,0 +1,275 @@
+{
+  "project_info": {
+    "project_number": "848048091201",
+    "firebase_url": "https://pharmastars-fb584.firebaseio.com",
+    "project_id": "pharmastars-fb584",
+    "storage_bucket": "pharmastars-fb584.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848048091201:android:2b094b423694ce17",
+        "android_client_info": {
+          "package_name": "com.example.gabropanel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848048091201-eq58ln84eb8802j059hd3u2cb2i9o04f.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gabropanel",
+            "certificate_hash": "085bd2bb214f8ff8f65f00b6cb31243f49ba75eb"
+          }
+        },
+        {
+          "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn8B8spDgY68wZgPtFC4fkZrI_ezobRhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "848048091201-186lr0iirc0himfm8frrt3li0v91uff0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "online.pharmastars.quraanegypt",
+                "app_store_id": "1617114723"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848048091201:android:89d1e4f5a92396529116c0",
+        "android_client_info": {
+          "package_name": "com.example.recordingpanel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn8B8spDgY68wZgPtFC4fkZrI_ezobRhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "848048091201-186lr0iirc0himfm8frrt3li0v91uff0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "online.pharmastars.quraanegypt",
+                "app_store_id": "1617114723"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848048091201:android:dc684f930418a4399116c0",
+        "android_client_info": {
+          "package_name": "com.udacity.project4"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848048091201-s3vdh60l3539gfinj9rkgcku4ir1pv1r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.udacity.project4",
+            "certificate_hash": "085bd2bb214f8ff8f65f00b6cb31243f49ba75eb"
+          }
+        },
+        {
+          "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn8B8spDgY68wZgPtFC4fkZrI_ezobRhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "848048091201-186lr0iirc0himfm8frrt3li0v91uff0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "online.pharmastars.quraanegypt",
+                "app_store_id": "1617114723"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848048091201:android:6194240aee19ef96",
+        "android_client_info": {
+          "package_name": "online.pharmastars.dosecalculator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848048091201-d4h3nfimk8mo9kq3gmcauug9mnlcoon0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "online.pharmastars.dosecalculator",
+            "certificate_hash": "f5d7d59f9cc0666214b663dd59dbfc1a25137406"
+          }
+        },
+        {
+          "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn8B8spDgY68wZgPtFC4fkZrI_ezobRhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "848048091201-186lr0iirc0himfm8frrt3li0v91uff0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "online.pharmastars.quraanegypt",
+                "app_store_id": "1617114723"
+              }
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-1703611161303368~3977537533"
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848048091201:android:ea00161844790808",
+        "android_client_info": {
+          "package_name": "online.pharmastars.dosecalculatorpro"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848048091201-hhq5pjj8be9bi8cne313rfoliutuh7q5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "online.pharmastars.dosecalculatorpro",
+            "certificate_hash": "f5d7d59f9cc0666214b663dd59dbfc1a25137406"
+          }
+        },
+        {
+          "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn8B8spDgY68wZgPtFC4fkZrI_ezobRhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "848048091201-186lr0iirc0himfm8frrt3li0v91uff0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "online.pharmastars.quraanegypt",
+                "app_store_id": "1617114723"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848048091201:android:d8b8ba2fc8dc02e8",
+        "android_client_info": {
+          "package_name": "online.pharmastars.quraanegypt"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848048091201-1kf6dbmf8fn4v7756o2cjb7l2hqqm6jn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "online.pharmastars.quraanegypt",
+            "certificate_hash": "f5d7d59f9cc0666214b663dd59dbfc1a25137406"
+          }
+        },
+        {
+          "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBn8B8spDgY68wZgPtFC4fkZrI_ezobRhs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848048091201-55ksj068ajshtun4gc08p4kklbt7c0ml.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "848048091201-186lr0iirc0himfm8frrt3li0v91uff0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "online.pharmastars.quraanegypt",
+                "app_store_id": "1617114723"
+              }
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-1703611161303368~5285711696"
+    }
+  ],
+  "configuration_version": "1"
+}
