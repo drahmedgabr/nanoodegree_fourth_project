@@ -23,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
 import com.google.android.material.snackbar.Snackbar
+import com.udacity.project4.MyApp
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
@@ -30,6 +31,7 @@ import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import kotlinx.android.synthetic.main.fragment_select_location.*
+import org.koin.android.ext.android.getKoin
 import org.koin.android.ext.android.inject
 import java.util.*
 
@@ -65,14 +67,18 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback  {
 //        TODO: put a marker to location that the user selected
 
 
-//        TODO: call this function after the user confirms on the selected location
-        onLocationSelected()
+        binding.saveLocationButton.setOnClickListener {
+            onLocationSelected()
+        }
 
         return binding.root
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+
+        styleMap()
+
         val latitude = 30.905036
         val longitude = 31.050079
 
@@ -88,6 +94,22 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback  {
                 it.longitude
             )
             map.addMarker(MarkerOptions().position(it).title("Dropped Pin").snippet(title))
+        }
+    }
+
+    private fun styleMap() {
+        try {
+            val success = map.setMapStyle(
+                MapStyleOptions.loadRawResourceStyle(
+                    requireActivity().applicationContext,
+                    R.raw.style_json
+                )
+            )
+
+            if (!success) Log.e("MapsActivity", "Style parsing failed.")
+
+        } catch (e: Resources.NotFoundException) {
+            Log.e("MapsActivity", "Style parsing failed. Reason: ", e)
         }
     }
 
