@@ -14,7 +14,6 @@ import android.util.Log
 import android.view.*
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -26,6 +25,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.udacity.project4.BuildConfig
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
+import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.*
@@ -42,6 +42,10 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var mapFragment: SupportMapFragment
     private lateinit var denialSnackbar: Snackbar
     private lateinit var activateLocationSnackbar: Snackbar
+    private var latLng: LatLng = LatLng(30.044022, 31.230202)
+    private var poiName = ""
+    private var selectedPoi: PointOfInterest? = null
+    private val zoomLevel = 15f
     private val runningQOrLater =
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
@@ -64,10 +68,6 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         checkPermissions()
-
-        _viewModel.saveButtonStat.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
-            if(it) binding.saveLocationButton.visibility = View.VISIBLE
-        })
 
 //        TODO: zoom to the user location after taking his permission
 //        TODO: put a marker to location that the user selected
@@ -92,27 +92,23 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
+        var marker: Marker? = null
         map = googleMap
-
         styleMap()
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel))
 
-        val home = LatLng(30.044022, 31.230202)
-        val zoomLevel = 15f
-
-        var marker: Marker? = map.addMarker(MarkerOptions().position(home).title("Dropped Pin"))
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(home, zoomLevel))
-
-        map.setOnMapClickListener {
-            marker?.remove()
-            _viewModel.latitude.value = it.latitude
-            _viewModel.longitude.value = it.longitude
+        map.setOnPoiClickListener {
+            if(marker != null) marker?.remove()
+            selectedPoi = it
+            latLng = it.latLng
+            poiName= it.name
             val title = String.format(
                 Locale.getDefault(),
                 "Lat: %1$.6f, Long: %2$.6f",
-                it.latitude,
-                it.longitude
+                latLng.latitude,
+                latLng.longitude
             )
-            marker = map.addMarker(MarkerOptions().position(it).title("Dropped Pin").snippet(title))
+            marker = map.addMarker(MarkerOptions().position(latLng).title("Dropped Pin").snippet(title))
         }
     }
 
@@ -133,9 +129,12 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun onLocationSelected() {
-        //        TODO: When the user confirms on the selected location,
-        //         send back the selected location details to the view model
-        //         and navigate back to the previous fragment to save the reminder and add the geofence
+        if(selectedPoi == null) return
+        _viewModel.latitude.value = latLng.latitude
+        _viewModel.longitude.value = latLng.longitude
+        _viewModel.reminderSelectedLocationStr.value = poiName
+        _viewModel.selectedPOI.value = selectedPoi
+        _viewModel.navigationCommand.value = NavigationCommand.Back
     }
 
 
@@ -256,7 +255,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         locationSettingsResponseTask.addOnCompleteListener {
             if (it.isSuccessful) {
                 map.isMyLocationEnabled = true
-                _viewModel.saveButtonStat.value = true
+                binding.saveLocationButton.visibility = View.VISIBLE
             }
         }
     }
