@@ -31,7 +31,6 @@
             android:padding="16dp"
             android:text="@string/save"
             android:textColor="@color/white"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent" />
 
 
