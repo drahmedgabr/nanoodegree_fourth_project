@@ -68,10 +68,6 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
         checkPermissions()
 
-//        TODO: zoom to the user location after taking his permission
-//        TODO: put a marker to location that the user selected
-
-
         binding.saveLocationButton.setOnClickListener {
             onLocationSelected()
         }
