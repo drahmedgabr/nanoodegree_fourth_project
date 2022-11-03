@@ -50,9 +50,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
 
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?,
     ): View? {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_select_location, container, false)
@@ -83,10 +82,10 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
     override fun onDestroy() {
         super.onDestroy()
-        if(this::denialSnackbar.isInitialized){
+        if (this::denialSnackbar.isInitialized) {
             denialSnackbar.dismiss()
         }
-        if(this::activateLocationSnackbar.isInitialized){
+        if (this::activateLocationSnackbar.isInitialized) {
             activateLocationSnackbar.dismiss()
         }
     }
@@ -98,17 +97,18 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel))
 
         map.setOnPoiClickListener {
-            if(marker != null) marker?.remove()
+            if (marker != null) marker?.remove()
             selectedPoi = it
             latLng = it.latLng
-            poiName= it.name
+            poiName = it.name
             val title = String.format(
                 Locale.getDefault(),
                 "Lat: %1$.6f, Long: %2$.6f",
                 latLng.latitude,
                 latLng.longitude
             )
-            marker = map.addMarker(MarkerOptions().position(latLng).title("Dropped Pin").snippet(title))
+            marker =
+                map.addMarker(MarkerOptions().position(latLng).title("Dropped Pin").snippet(title))
         }
     }
 
@@ -129,7 +129,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun onLocationSelected() {
-        if(selectedPoi == null) return
+        if (selectedPoi == null) return
         _viewModel.latitude.value = latLng.latitude
         _viewModel.longitude.value = latLng.longitude
         _viewModel.reminderSelectedLocationStr.value = poiName
@@ -171,7 +171,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
 
         if (
@@ -197,7 +197,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             denialSnackbar.show()
         } else {
             checkDeviceLocationSettings()
-            if(this::denialSnackbar.isInitialized){
+            if (this::denialSnackbar.isInitialized) {
                 denialSnackbar.dismiss()
             }
         }
@@ -226,7 +226,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         locationSettingsResponseTask.addOnFailureListener { exception ->
             if (exception is ResolvableApiException && resolve) {
 
-                if(this::activateLocationSnackbar.isInitialized){
+                if (this::activateLocationSnackbar.isInitialized) {
                     activateLocationSnackbar.dismiss()
                 }
 
@@ -240,7 +240,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
                         REQUEST_TURN_DEVICE_LOCATION_ON
                     )
                 } catch (sendEx: IntentSender.SendIntentException) {
-                   Log.d("SelectLocationFragment", "Error geting location settings resolution: " + sendEx.message)
+                    Log.d("SelectLocationFragment",
+                        "Error geting location settings resolution: " + sendEx.message)
                 }
             } else {
                 activateLocationSnackbar = Snackbar.make(
@@ -271,7 +272,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             if (runningQOrLater) {
                 PackageManager.PERMISSION_GRANTED ==
                         ActivityCompat.checkSelfPermission(
-                            activity!!.applicationContext, Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                            activity!!.applicationContext,
+                            Manifest.permission.ACCESS_BACKGROUND_LOCATION
                         )
             } else {
                 true
@@ -285,7 +287,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
         // Else request the permission
         // this provides the result[LOCATION_PERMISSION_INDEX]
-        var permissionsArray = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        var permissionsArray = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION)
 
         val resultCode = when {
             runningQOrLater -> {
