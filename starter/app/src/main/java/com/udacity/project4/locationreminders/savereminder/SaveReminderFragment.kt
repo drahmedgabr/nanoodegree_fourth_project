@@ -100,7 +100,7 @@ class SaveReminderFragment : BaseFragment() {
         val longitude = _viewModel.longitude.value ?: 0.0
         id = UUID.randomUUID().toString()
 
-        _viewModel.saveReminder(ReminderDataItem(title,
+        _viewModel.validateAndSaveReminder(ReminderDataItem(title,
             description,
             location,
             latitude,
