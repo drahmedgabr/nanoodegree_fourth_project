@@ -32,6 +32,7 @@
             android:textColor="@color/white"
             android:background="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="gone"
             android:text="@string/save" />
 
 

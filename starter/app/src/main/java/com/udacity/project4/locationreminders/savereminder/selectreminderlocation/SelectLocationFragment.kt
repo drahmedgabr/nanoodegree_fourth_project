@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.*
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -45,6 +46,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -62,6 +64,10 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         mapFragment.getMapAsync(this)
 
         checkPermissions()
+
+        _viewModel.saveButtonStat.observe(viewLifecycleOwner, androidx.lifecycle.Observer {
+            if(it) binding.saveLocationButton.visibility = View.VISIBLE
+        })
 
 //        TODO: zoom to the user location after taking his permission
 //        TODO: put a marker to location that the user selected
@@ -90,21 +96,23 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
         styleMap()
 
-        val latitude = 30.905036
-        val longitude = 31.050079
-
-        val home = LatLng(latitude, longitude)
+        val home = LatLng(30.044022, 31.230202)
         val zoomLevel = 15f
-        map.addMarker(MarkerOptions().position(home).title("Ahmed Gabr Home"))
+
+        var marker: Marker? = map.addMarker(MarkerOptions().position(home).title("Dropped Pin"))
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(home, zoomLevel))
-        map.setOnMapLongClickListener {
+
+        map.setOnMapClickListener {
+            marker?.remove()
+            _viewModel.latitude.value = it.latitude
+            _viewModel.longitude.value = it.longitude
             val title = String.format(
                 Locale.getDefault(),
                 "Lat: %1$.6f, Long: %2$.6f",
                 it.latitude,
                 it.longitude
             )
-            map.addMarker(MarkerOptions().position(it).title("Dropped Pin").snippet(title))
+            marker = map.addMarker(MarkerOptions().position(it).title("Dropped Pin").snippet(title))
         }
     }
 
@@ -248,6 +256,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         locationSettingsResponseTask.addOnCompleteListener {
             if (it.isSuccessful) {
                 map.isMyLocationEnabled = true
+                _viewModel.saveButtonStat.value = true
             }
         }
     }
