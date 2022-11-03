@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
 import android.view.*
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.common.api.ResolvableApiException
@@ -253,6 +254,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             if (it.isSuccessful) {
                 map.isMyLocationEnabled = true
                 binding.saveLocationButton.visibility = View.VISIBLE
+                Toast.makeText(this.context, getText(R.string.select_location), Toast.LENGTH_SHORT).show()
             }
         }
     }
