@@ -79,7 +79,7 @@ class RemindersActivityTest : AutoCloseKoinTest() {
     }
 
     @Test
-    fun RemindersActivity_testSavingReminder() = runBTest {
+    fun RemindersActivity_testSavingReminder() = runBlocking {
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
