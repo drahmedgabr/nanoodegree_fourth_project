@@ -67,14 +67,16 @@ class RemindersDaoTest {
     fun RemindersDatabase_testGetReminders() = runTest {
         //Given
         val reminder = ReminderDTO("Title", "Description", "Location", 0.0, 0.0, "ABC")
+        val reminder2 = ReminderDTO("Title", "Description", "Location", 0.0, 0.0, "ABCD")
 
         //When
         remindersDatabase.reminderDao().saveReminder(reminder)
+        remindersDatabase.reminderDao().saveReminder(reminder2)
         val loaded = remindersDatabase.reminderDao().getReminders()
 
         //Then
         assertThat(loaded, notNullValue())
-        assertThat(loaded.size, IsEqual(1))
+        assertThat(loaded.size, IsEqual(2))
     }
 
     @Test
