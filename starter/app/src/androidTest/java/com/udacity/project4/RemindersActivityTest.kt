@@ -23,7 +23,7 @@ import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorActivity
 import com.udacity.project4.utils.EspressoIdlingResource
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -87,13 +87,13 @@ class RemindersActivityTest : AutoCloseKoinTest() {
 
         repository = get()
 
-        runBlocking {
+        runTest {
             repository.deleteAllReminders()
         }
     }
 
     @Test
-    fun RemindersActivity_testSavingReminder() = runBlocking {
+    fun RemindersActivity_testSavingReminder() = runTest {
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 

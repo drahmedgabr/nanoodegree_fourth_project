@@ -20,7 +20,6 @@ import com.udacity.project4.locationreminders.data.local.LocalDB
 import com.udacity.project4.locationreminders.data.local.RemindersLocalRepository
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
@@ -74,7 +73,7 @@ class ReminderListFragmentTest : AutoCloseKoinTest() {
 
         repository = get()
 
-        runBlocking {
+        runTest {
             repository.deleteAllReminders()
         }
     }
