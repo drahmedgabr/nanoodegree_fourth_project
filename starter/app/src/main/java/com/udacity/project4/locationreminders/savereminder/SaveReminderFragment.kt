@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.udacity.project4.BuildConfig
 import com.udacity.project4.R
@@ -201,7 +202,11 @@ class SaveReminderFragment : BaseFragment() {
         if (foregroundAndBackgroundLocationPermissionApproved()) {
             checkDeviceLocationSettings()
         } else {
-            requestForegroundAndBackgroundLocationPermissions()
+            if (requestType == RequestType.BACKGROUND) {
+                showApproveDialoge()
+            } else {
+                requestForegroundAndBackgroundLocationPermissions()
+            }
         }
     }
 
@@ -293,5 +298,18 @@ class SaveReminderFragment : BaseFragment() {
         }
 
         requestPermissions(permissionsArray, resultCode)
+    }
+
+    private fun showApproveDialoge() {
+        MaterialAlertDialogBuilder(context!!)
+            .setTitle(resources.getString(R.string.dialoge_title))
+            .setMessage(resources.getString(R.string.dialoge_content))
+            .setNegativeButton(resources.getString(R.string.back)) { dialog, which ->
+                // Respond to negative button press
+            }
+            .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
+                requestForegroundAndBackgroundLocationPermissions()
+            }
+            .show()
     }
 }
