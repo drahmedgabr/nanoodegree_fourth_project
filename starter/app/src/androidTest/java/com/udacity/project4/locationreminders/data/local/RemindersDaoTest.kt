@@ -64,7 +64,7 @@ class RemindersDaoTest {
     }
 
     @Test
-    fun RemindersDatabase_testRetreiveReminders() = runTest {
+    fun RemindersDatabase_testGetReminders() = runTest {
         //Given
         val reminder = ReminderDTO("Title", "Description", "Location", 0.0, 0.0, "ABC")
 
@@ -94,7 +94,6 @@ class RemindersDaoTest {
         loaded = remindersDatabase.reminderDao().getReminders()
 
         //Then
-        assertThat(loaded, notNullValue())
         assertThat(loaded.size, IsEqual(0))
     }
 
