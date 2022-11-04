@@ -1,5 +1,6 @@
 package com.udacity.project4.locationreminders.reminderslist
 
+import android.app.Application
 import android.os.Bundle
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.fragment.app.testing.launchFragmentInContainer
@@ -19,13 +20,13 @@ import com.udacity.project4.locationreminders.data.local.LocalDB
 import com.udacity.project4.locationreminders.data.local.RemindersLocalRepository
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.context.startKoin
 import org.koin.core.context.stopKoin
@@ -40,42 +41,42 @@ import org.mockito.Mockito.verify
 @MediumTest
 class ReminderListFragmentTest : AutoCloseKoinTest() {
 
-    private lateinit var reminderDataSource: ReminderDataSource
+    private lateinit var repository: ReminderDataSource
+    private lateinit var appContext: Application
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
-    fun startInject() {
+    fun init() {
         stopKoin()
+        appContext = getApplicationContext()
         val myModule = module {
             viewModel {
                 RemindersListViewModel(
-                    get(),
+                    appContext,
                     get() as ReminderDataSource
                 )
             }
             single {
                 SaveReminderViewModel(
-                    get(),
+                    appContext,
                     get() as ReminderDataSource
                 )
             }
             single { RemindersLocalRepository(get()) as ReminderDataSource }
-            single { LocalDB.createRemindersDao(getApplicationContext()) }
+            single { LocalDB.createRemindersDao(appContext) }
         }
 
         startKoin {
-            androidContext(getApplicationContext())
             modules(listOf(myModule))
         }
 
-        reminderDataSource = get()
-    }
+        repository = get()
 
-    @Before
-    fun clearReminderList() = runTest {
-        reminderDataSource.deleteAllReminders()
+        runBlocking {
+            repository.deleteAllReminders()
+        }
     }
 
     @Test
@@ -102,7 +103,7 @@ class ReminderListFragmentTest : AutoCloseKoinTest() {
         val reminder = ReminderDTO("Title", "Description", "Location", 0.0, 0.0, "ABC")
 
         //When
-        reminderDataSource.saveReminder(reminder)
+        repository.saveReminder(reminder)
         launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
 
         //Then
