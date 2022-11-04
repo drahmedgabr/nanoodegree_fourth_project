@@ -63,4 +63,39 @@ class RemindersDaoTest {
         assertThat(loaded?.location, IsEqual(reminder.location))
     }
 
+    @Test
+    fun RemindersDatabase_testRetreiveReminders() = runTest {
+        //Given
+        val reminder = ReminderDTO("Title", "Description", "Location", 0.0, 0.0, "ABC")
+
+        //When
+        remindersDatabase.reminderDao().saveReminder(reminder)
+        val loaded = remindersDatabase.reminderDao().getReminders()
+
+        //Then
+        assertThat(loaded, notNullValue())
+        assertThat(loaded.size, IsEqual(1))
+    }
+
+    @Test
+    fun RemindersDatabase_deleteReminders() = runTest {
+        //Given
+        val reminder = ReminderDTO("Title", "Description", "Location", 0.0, 0.0, "ABC")
+
+        //When
+        remindersDatabase.reminderDao().saveReminder(reminder)
+        var loaded = remindersDatabase.reminderDao().getReminders()
+
+        //Then
+        assertThat(loaded, notNullValue())
+        assertThat(loaded.size, IsEqual(1))
+
+        remindersDatabase.reminderDao().deleteAllReminders()
+        loaded = remindersDatabase.reminderDao().getReminders()
+
+        //Then
+        assertThat(loaded, notNullValue())
+        assertThat(loaded.size, IsEqual(0))
+    }
+
 }
