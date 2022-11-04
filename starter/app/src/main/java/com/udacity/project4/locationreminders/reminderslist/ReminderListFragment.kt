@@ -3,6 +3,7 @@ package com.udacity.project4.locationreminders.reminderslist
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import androidx.activity.addCallback
 import androidx.databinding.DataBindingUtil
 import com.firebase.ui.auth.AuthUI
 import com.udacity.project4.R
@@ -47,6 +48,9 @@ class ReminderListFragment : BaseFragment() {
         binding.addReminderFAB.setOnClickListener {
             navigateToAddReminder()
         }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
+            // TO Prevent go back to login Activity
+        }
     }
 
     override fun onResume() {
@@ -90,5 +94,4 @@ class ReminderListFragment : BaseFragment() {
 //        display logout as menu item
         inflater.inflate(R.menu.main_menu, menu)
     }
-
 }
