@@ -14,6 +14,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.hamcrest.CoreMatchers.*
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.core.IsEqual
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -70,5 +71,15 @@ class RemindersListViewModelTest {
 
         //Then
         assertThat(remindersListViewModel.showSnackBar.getOrAwaitValue(), not(nullValue()))
+    }
+
+    @Test
+    fun remindersListViewModel_checkWhenDatabaseIsEmpty() = runTest {
+
+        //When
+        remindersListViewModel.loadReminders()
+
+        //Then
+        assertThat(remindersListViewModel.showNoData.getOrAwaitValue(), IsEqual(true))
     }
 }

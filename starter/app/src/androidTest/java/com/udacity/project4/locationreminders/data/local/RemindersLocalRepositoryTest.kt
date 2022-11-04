@@ -98,4 +98,16 @@ class RemindersLocalRepositoryTest {
         //Then
         assertThat(loaded.data.size, IsEqual(0))
     }
+
+    @Test
+    fun RemindersLocalRepository_testGetNotFoundReminder() = runTest {
+        //Given
+        val reminderID = "Aliens"
+
+        //When
+        val loaded = remindersLocalRepository.getReminder(reminderID) as Result.Error
+
+        //Then
+        assertThat(loaded.message, IsEqual("Reminder not found!"))
+    }
 }

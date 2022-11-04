@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SmallTest;
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
+import com.udacity.project4.locationreminders.data.dto.Result
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.runner.RunWith;
@@ -28,7 +29,7 @@ class RemindersDaoTest {
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
-    fun initDB(){
+    fun initDB() {
         remindersDatabase = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
             RemindersDatabase::class.java
@@ -36,7 +37,7 @@ class RemindersDaoTest {
     }
 
     @After
-    fun closeDB(){
+    fun closeDB() {
         remindersDatabase.close()
     }
 
@@ -92,5 +93,4 @@ class RemindersDaoTest {
         //Then
         assertThat(loaded.size, IsEqual(0))
     }
-
 }
