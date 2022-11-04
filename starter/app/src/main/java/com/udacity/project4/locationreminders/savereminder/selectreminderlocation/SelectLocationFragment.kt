@@ -109,6 +109,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun onLocationSelected() {
+        if (poiName == "") return
         _viewModel.latitude.value = latLng.latitude
         _viewModel.longitude.value = latLng.longitude
         _viewModel.reminderSelectedLocationStr.value = poiName
