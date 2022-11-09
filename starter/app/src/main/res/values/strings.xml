@@ -41,8 +41,4 @@
     <string name="geofence_too_many_pending_intents">You have provided too many PendingIntents to the addGeofences() call.</string>
     <string name="error_adding_geofence">Error Happened, Can\'t Add Geofence</string>
     <string name="custom_location">Custom Location</string>
-    <string name="dialoge_title">Background Location Permission</string>
-    <string name="dialoge_content">This feature require tracking location while the app is opened or not.\nIn the next screen please select Allow all the time.</string>
-    <string name="back">Back</string>
-    <string name="accept">Go To Permission</string>
 </resources>
