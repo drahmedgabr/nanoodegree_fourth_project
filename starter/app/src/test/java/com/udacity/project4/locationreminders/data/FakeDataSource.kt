@@ -26,7 +26,7 @@ class FakeDataSource : ReminderDataSource {
 
     override suspend fun getReminder(id: String): Result<ReminderDTO> {
         if (errorFound) {
-            return Result.Error("Error while testing: getReminders(id: String)")
+            return Result.Error("Error while testing: getReminders(id: $String)")
         } else {
             linkedHashMap[id]?.let {
                 return Result.Success(it)

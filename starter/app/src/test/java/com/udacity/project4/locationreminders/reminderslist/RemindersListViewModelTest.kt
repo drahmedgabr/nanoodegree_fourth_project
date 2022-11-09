@@ -70,7 +70,7 @@ class RemindersListViewModelTest {
         remindersListViewModel.loadReminders()
 
         //Then
-        assertThat(remindersListViewModel.showSnackBar.getOrAwaitValue(), not(nullValue()))
+        assertThat(remindersListViewModel.showSnackBar.getOrAwaitValue(), IsEqual("Error while testing: getReminders()"))
     }
 
     @Test
