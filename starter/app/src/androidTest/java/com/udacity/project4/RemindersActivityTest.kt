@@ -1,17 +1,17 @@
 package com.udacity.project4
 
+import android.app.Activity
 import android.app.Application
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
+import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
-import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.typeText
-import androidx.test.espresso.assertion.ViewAssertions
-import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.withId
-import androidx.test.espresso.matcher.ViewMatchers.withText
+import androidx.test.espresso.action.ViewActions.*
+import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.RootMatchers.withDecorView
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.udacity.project4.locationreminders.RemindersActivity
@@ -24,6 +24,8 @@ import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.monitorActivity
 import com.udacity.project4.utils.EspressoIdlingResource
 import kotlinx.coroutines.test.runTest
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.CoreMatchers.not
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -97,15 +99,57 @@ class RemindersActivityTest : AutoCloseKoinTest() {
         val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(activityScenario)
 
+        var activity: Activity? = null
+        activityScenario.onActivity {
+            activity = it
+        }
+
         onView(withId(R.id.addReminderFAB)).perform(click())
         onView(withId(R.id.reminderTitle)).perform(typeText("Title"))
         onView(withId(R.id.reminderDescription)).perform(typeText("Description"))
+        Espresso.pressBack()
         onView(withId(R.id.selectLocation)).perform(click())
-        onView(withId(R.id.map)).perform(click())
+        onView(withId(R.id.map)).perform(longClick())
         onView(withId(R.id.save_location_button)).perform(click())
         onView(withId(R.id.saveReminder)).perform(click())
-        onView(withText("Title")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
-        onView(withText("Description")).check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+
+        //Test Showing Toast when reminder saved
+        onView(withText(R.string.reminder_saved)).inRoot(withDecorView(not(
+            `is`(activity!!.window.decorView)))).check(matches(
+            isDisplayed()))
+
+        //Test reminder is correctly displayed
+        onView(withText("Title")).check(matches(isDisplayed()))
+        onView(withText("Description")).check(matches(isDisplayed()))
+
+        activityScenario.close()
+    }
+
+
+    @Test
+    fun RemindersActivity_testSnackBar_when_validatingTitle() = runTest {
+        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        onView(withId(R.id.saveReminder)).perform(click())
+        onView(withId(com.google.android.material.R.id.snackbar_text))
+            .check(matches(withText(R.string.err_enter_title)))
+
+        activityScenario.close()
+    }
+
+    @Test
+    fun RemindersActivity_testSnackBar_when_validatingLocation() = runTest {
+        val activityScenario = ActivityScenario.launch(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(activityScenario)
+
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        onView(withId(R.id.reminderTitle)).perform(typeText("Title"))
+        Espresso.pressBack()
+        onView(withId(R.id.saveReminder)).perform(click())
+        onView(withId(com.google.android.material.R.id.snackbar_text))
+            .check(matches(withText(R.string.err_select_location)))
 
         activityScenario.close()
     }
