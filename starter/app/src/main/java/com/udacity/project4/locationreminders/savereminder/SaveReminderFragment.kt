@@ -151,6 +151,7 @@ class SaveReminderFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON) {
+            Thread.sleep(500)
             checkDeviceLocationSettings(false)
         }
     }
@@ -214,14 +215,15 @@ class SaveReminderFragment : BaseFragment() {
                 }
 
                 try {
-                    exception.startResolutionForResult(
-                        activity!!,
-                        REQUEST_TURN_DEVICE_LOCATION_ON
+                    startIntentSenderForResult(
+                        exception.resolution.intentSender,
+                        REQUEST_TURN_DEVICE_LOCATION_ON, null, 0, 0, 0, null
                     )
                 } catch (sendEx: IntentSender.SendIntentException) {
                     Log.d("SelectLocationFragment",
                         "Error geting location settings resolution: " + sendEx.message)
                 }
+
             } else {
                 activateLocationSnackbar = Snackbar.make(
                     view!!,
