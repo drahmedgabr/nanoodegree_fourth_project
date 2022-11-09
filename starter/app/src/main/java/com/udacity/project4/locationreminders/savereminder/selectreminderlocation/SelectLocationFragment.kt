@@ -20,7 +20,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.android.material.snackbar.Snackbar
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
@@ -168,9 +167,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         permissions: Array<String>,
         grantResults: IntArray,
     ) {
-
         if (
-            !grantResults.isEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)
+            !grantResults.isEmpty() && (grantResults[FINE_LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_GRANTED || grantResults[COARSE_LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_GRANTED)
         ) {
             map.isMyLocationEnabled = true
         }

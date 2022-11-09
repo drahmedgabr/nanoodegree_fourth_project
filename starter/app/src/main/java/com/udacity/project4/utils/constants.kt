@@ -1,7 +1,5 @@
 package com.udacity.project4.utils
 
-import java.util.concurrent.TimeUnit
-
 
 const val REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE = 33
 
@@ -14,8 +12,6 @@ const val FINE_LOCATION_PERMISSION_INDEX = 0
 const val COARSE_LOCATION_PERMISSION_INDEX = 1
 
 const val BACKGROUND_LOCATION_PERMISSION_INDEX = 2
-
-val GEOFENCE_EXPIRATION_IN_MILLISECONDS: Long = TimeUnit.HOURS.toMillis(1)
 
 const val GEOFENCE_RADIUS_IN_METERS = 100f
 
