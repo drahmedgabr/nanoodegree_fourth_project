@@ -18,7 +18,6 @@ import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.udacity.project4.BuildConfig
 import com.udacity.project4.R
@@ -33,8 +32,6 @@ import java.util.*
 
 class SaveReminderFragment : BaseFragment() {
 
-    enum class RequestType { FOREGROUND, BACKGROUND }
-
     override val _viewModel: SaveReminderViewModel by inject()
     private lateinit var binding: FragmentSaveReminderBinding
     private lateinit var geofencingClient: GeofencingClient
@@ -43,7 +40,6 @@ class SaveReminderFragment : BaseFragment() {
     private lateinit var id: String
     private val runningQOrLater =
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
-    private var requestType = RequestType.FOREGROUND
 
 
     private val geofencePendingIntent: PendingIntent by lazy {
@@ -78,19 +74,13 @@ class SaveReminderFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.lifecycleOwner = this
         binding.selectLocation.setOnClickListener {
-            requestType = RequestType.FOREGROUND
-            requestPermissions()
+            _viewModel.navigationCommand.value =
+                NavigationCommand.To(SaveReminderFragmentDirections.actionSaveReminderFragmentToSelectLocationFragment())
         }
 
         binding.saveReminder.setOnClickListener {
-            requestType = RequestType.BACKGROUND
             requestPermissions()
         }
-    }
-
-    private fun navigateToMap() {
-        _viewModel.navigationCommand.value =
-            NavigationCommand.To(SaveReminderFragmentDirections.actionSaveReminderFragmentToSelectLocationFragment())
     }
 
     private fun addReminder() {
@@ -173,7 +163,7 @@ class SaveReminderFragment : BaseFragment() {
 
         if (
             grantResults.isEmpty() ||
-            grantResults[LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED ||
+            grantResults[FINE_LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED ||
             (requestCode == REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE &&
                     grantResults[BACKGROUND_LOCATION_PERMISSION_INDEX] ==
                     PackageManager.PERMISSION_DENIED)
@@ -202,11 +192,7 @@ class SaveReminderFragment : BaseFragment() {
         if (foregroundAndBackgroundLocationPermissionApproved()) {
             checkDeviceLocationSettings()
         } else {
-            if (requestType == RequestType.BACKGROUND) {
-                showApproveDialoge()
-            } else {
-                requestForegroundAndBackgroundLocationPermissions()
-            }
+            requestForegroundAndBackgroundLocationPermissions()
         }
     }
 
@@ -248,11 +234,7 @@ class SaveReminderFragment : BaseFragment() {
         }
         locationSettingsResponseTask.addOnCompleteListener {
             if (it.isSuccessful) {
-                if (requestType == RequestType.FOREGROUND) {
-                    navigateToMap()
-                } else {
-                    addReminder()
-                }
+                addReminder()
             }
         }
     }
@@ -274,11 +256,7 @@ class SaveReminderFragment : BaseFragment() {
             } else {
                 true
             }
-        if (requestType == RequestType.BACKGROUND) {
-            return foregroundLocationApproved && backgroundPermissionApproved
-        } else {
-            return foregroundLocationApproved
-        }
+        return foregroundLocationApproved && backgroundPermissionApproved
     }
 
     private fun requestForegroundAndBackgroundLocationPermissions() {
@@ -289,7 +267,7 @@ class SaveReminderFragment : BaseFragment() {
             Manifest.permission.ACCESS_COARSE_LOCATION)
 
         val resultCode = when {
-            runningQOrLater && requestType == RequestType.BACKGROUND -> {
+            runningQOrLater -> {
 
                 permissionsArray += Manifest.permission.ACCESS_BACKGROUND_LOCATION
                 REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE
@@ -298,18 +276,5 @@ class SaveReminderFragment : BaseFragment() {
         }
 
         requestPermissions(permissionsArray, resultCode)
-    }
-
-    private fun showApproveDialoge() {
-        MaterialAlertDialogBuilder(context!!)
-            .setTitle(resources.getString(R.string.dialoge_title))
-            .setMessage(resources.getString(R.string.dialoge_content))
-            .setNegativeButton(resources.getString(R.string.back)) { dialog, which ->
-                // Respond to negative button press
-            }
-            .setPositiveButton(resources.getString(R.string.accept)) { dialog, which ->
-                requestForegroundAndBackgroundLocationPermissions()
-            }
-            .show()
     }
 }

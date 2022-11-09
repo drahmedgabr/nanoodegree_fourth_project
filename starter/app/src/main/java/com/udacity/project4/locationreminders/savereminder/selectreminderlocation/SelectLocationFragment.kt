@@ -1,11 +1,15 @@
 package com.udacity.project4.locationreminders.savereminder.selectreminderlocation
 
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -59,9 +63,11 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(googleMap: GoogleMap) {
-        var marker: Marker? = null
         map = googleMap
-        map.isMyLocationEnabled = true
+
+        requestPermissions()
+
+        var marker: Marker? = null
         styleMap()
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel))
 
@@ -71,21 +77,21 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             poiName = it.name
             val title = String.format(
                 Locale.getDefault(),
-                "Lat: %1$.6f, Long: %2$.6f",
+                getString(R.string.lat_long_snippet),
                 latLng.latitude,
                 latLng.longitude
             )
             marker =
-                map.addMarker(MarkerOptions().position(latLng).title("Dropped Pin").snippet(title))
+                map.addMarker(MarkerOptions().position(latLng).title(poiName).snippet(title))
         }
 
-        map.setOnMapClickListener {
+        map.setOnMapLongClickListener {
             if (marker != null) marker?.remove()
             latLng = it
             poiName = getString(R.string.custom_location)
             val title = String.format(
                 Locale.getDefault(),
-                "Lat: %1$.6f, Long: %2$.6f",
+                getString(R.string.lat_long_snippet),
                 latLng.latitude,
                 latLng.longitude
             )
@@ -109,7 +115,10 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun onLocationSelected() {
-        if (poiName == "") return
+        if (poiName == "") {
+            Toast.makeText(context, getText(R.string.select_location), Toast.LENGTH_SHORT).show()
+            return
+        }
         _viewModel.latitude.value = latLng.latitude
         _viewModel.longitude.value = latLng.longitude
         _viewModel.reminderSelectedLocationStr.value = poiName
@@ -139,5 +148,53 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray,
+    ) {
+
+        if (
+            !grantResults.isEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED || grantResults[1] == PackageManager.PERMISSION_GRANTED)
+        ) {
+            map.isMyLocationEnabled = true
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestPermissions() {
+        if (foregroundLocationPermissionApproved()) {
+            map.isMyLocationEnabled = true
+        } else {
+            requestForegroundLocationPermission()
+        }
+    }
+
+
+    private fun foregroundLocationPermissionApproved(): Boolean {
+        val foregroundLocationApproved = (
+                PackageManager.PERMISSION_GRANTED ==
+                        ActivityCompat.checkSelfPermission(
+                            activity!!.applicationContext,
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ))
+
+        return foregroundLocationApproved
+    }
+
+    private fun requestForegroundLocationPermission() {
+        if (foregroundLocationPermissionApproved())
+            return
+
+        var permissionsArray = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION)
+
+        val resultCode = REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
+
+        requestPermissions(permissionsArray, resultCode)
     }
 }
